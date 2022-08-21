@@ -1,0 +1,166 @@
+<div class="div_step" id="div_step">
+    
+<div class="Zone_info">
+    {%for row in user%}
+    <div class="tile p-2"><p class="text-center content_info btn-danger">Order Id :{{row[9]}}</p></div>
+    <div class="d-flex justify-content-around">
+        <div class="name d-flex"><h5>Full Name :</h5><p class="text-center content_info">{{row[3]}}</p></div>
+        <div class="employee d-flex"><h5>Employee Code :</h5> <p class="text-center content_info">{{row[4]}}</p></div>
+      
+    </div>
+    <div class="d-flex justify-content-around">
+        <div class="mail d-flex" ><h5>Mail :</h5><p class="text-center content_info">{{row[5]}}</p></div>
+        <div class="part d-flex"><h5>Part :</h5><p class="text-center content_info">{{row[6]}}</p></div>
+        <div class="factory d-flex"><h5>Factory :</h5><p class="text-center content_info">{{row[7]}}</p></div>
+    </div>
+    {%endfor%}
+</div>
+<div class="zone_upload">
+    <div class="zone_mail">
+        <div class="tile p-2"><p class="text-center content_info btn-danger">Please enter your email here</p></div>
+        <li class="list-group-item active tile-list btn-light" id="error_mail">Email list</li>
+
+        <ul class="list-group p-2 list-group-mail" id="ul_mail">
+            {%for mail in mails%}
+                {% if mail[1]!=check_data %}
+                    <input type="email" class="list-group-item"  id="mail-{{mail[0]}}"value="{{mail[1]}}" required>
+                    {% else %}
+                    <input type="email" class="list-group-item mail" id="mail-{{mail[0]}}" placeholder="***@mail.foxconn.com"  required>
+                {%endif%}
+            {%endfor%}
+        </ul>
+    </div>
+    <div class="zone_pdf">
+        <div class="tile p-2"><p class="text-center content_info btn-danger">Please upload the pdf file here</p></div>
+        <li class="list-group-item active tile-list btn-light">Pdf file list</li>
+        <ul class="list-group p-2 list-group-pdf" id="list_pdf">
+        </ul>
+        <form id="upload-file" method="post" enctype="multipart/form-data" id="submit_Form">
+            <div class="input-group input-upload">
+                <div class="input-group-prepend">
+                <input type="button" class="input-group-text " id="inputGroupFileAddon01" style="cursor:pointer;" value="Upload">
+                </div>
+                <div class="custom-file">
+                <input type="file" name="file" accept=".pdf" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                <input   >
+                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="step">
+    <button type="button" class="btn btn-success  btn-lg btn-block " onclick="open_div()">Step 2</button>
+</div>
+</div>
+<div class="input_excel"id="input_excel">
+<div style="margin-top:50px ;border-top: 1px solid black;"><h3>Please enter information in the SO table</h3></div>
+<div class="input_content">
+    <table class="table_content">
+        <thead>
+            <tr>
+                <th style="width: 50px;">Source</th>
+                <th style="width: 50px;">Target</th>
+                <th style="width: 50px;">Item</th>
+                <th>BU</th>
+                <th>Sales office</th>
+                <th>Sales area</th>
+                <th>Order Type</th>
+                <th>Sold-to party</th>
+                <th>Ship-to party</th>
+                <th>PO No.</th>
+                <th>PO Date</th>
+                <th>Material Name</th>
+                <th>Customer Material No.</th>
+                <th>Order Quantity</th>
+                <th>Unit price</th>
+                <th>Amount</th>
+                <th>Shipping Type</th>
+                <th>Stor.Location</th>
+                <th>Po item</th>
+                <th>PQ NO#</th>
+                <th>ReferenceNo</th>
+                <th>packingslip</th>
+                <th>Incoterm</th>
+                <th>PORev.</th>
+                <th>Remark</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody id="tbl_1">
+            {%if check=="Create"%}
+                {% for row in Row_contents %}
+                <tr id="row_{{row[0]}}">
+                    <td ">
+                        <input style="width: 50px;" type="radio" name="source_copy" onclick="get_id('{{row[0]}}')" title="source copy">
+                    </td>
+                    <td >
+                        <input style="width: 50px;" type="button" onclick="copy_row('{{row[0]}}','row_{{row[0]}}','{{Row_contents.index(row)+1}}')" id="" title="target copy">
+                    </td>
+                    <td >
+                        <input style="width: 50px;"  type="text" class="input_so" disabled value={{Row_contents.index(row)+1}}>
+                    </td>
+                    {% if row[1]!=check_data %}
+                        <td>
+                            <input type="text" class="input_so" id="BU-{{row[0]}}-{{row[24]}}" value="{{row[1]}}">
+                        </td>
+                        {% else %}
+                        <td><input type="text" class="input_so" id="BU-{{row[0]}}-{{row[24]}}" value=""></td>
+                    {% endif %}
+                        {%for list in list_content %}
+
+                            {% for x in range(22) %}
+                                {% if row[x+2]!=check_data %}
+                                    <td><input type="text" class="input_so" id="{{list[x+1]}}-{{row[0]}}-{{row[24]}}" value="{{row[x+2]}}"></td>
+                                {% elif x==5 or x==9 or x==10%}
+                                    <td><input type="number" class="input_so" id="{{list[x+1]}}-{{row[0]}}-{{row[24]}}" value=""></td>
+                                {% elif x==6   %}
+                                <td><input type="date" class="input_so" id="{{list[x+1]}}-{{row[0]}}-{{row[24]}}" value=""></td>
+                                {% else %}   
+                                    <td><input type="text" class="input_so" id="{{list[x+1]}}-{{row[0]}}-{{row[24]}}" value=""></td>
+                                    
+                                {% endif %} 
+                            {%endfor%}
+                        {%endfor%}
+                </tr>
+                {%endfor%}
+
+                {%else%}
+                {% for row in Row_contents %}
+                <td>
+                    <input style="width:15px ; height: 15px;" type="radio" name="source_copy" onclick="get_id('{{row[0]}}')" title="source copy">
+                </td>
+                <td>
+                    <input style="width:15px ; height: 15px;" type="button" onclick="copy_row('{{row[0]}}','row_{{row[0]}}','{{stt}}')" id="">
+                </td>
+                <td>
+                    <input style="width:15px ; height: 15px; text-align: center;"  type="text" class="input_so" disabled value={{stt}}>
+                </td>
+                {% if row[1]==check_data or row[1]=="None" %}
+                    <td><input type="text" class="input_so" id="BU-{{row[0]}}-{{row[24]}}" value=""></td>
+                    {% else %}
+                    <td><input type="text" class="input_so" id="BU-{{row[0]}}-{{row[24]}}" value="{{row[1]}}"></td>
+                {% endif %}
+                    {%for list in list_content %}
+
+                        {% for x in range(22) %}
+                            {% if row[x+2]==check_data or row[x+2]=='None' %}
+                                <td><input type="text" class="input_so" id="{{list[x+1]}}-{{row[0]}}-{{row[24]}}" value=""></td>
+                            {% else %}     
+                                <td><input type="text" class="input_so" id="{{list[x+1]}}-{{row[0]}}-{{row[24]}}" value="{{row[x+2]}}"></td>
+                            {% endif %} 
+                        {%endfor%}
+                    {%endfor%}
+                {%endfor%}
+            {%endif%}
+
+        </tbody>
+    </table>
+</div>
+<center><button class="btn btn-success  btn-lg btn-block " id="send_api">Submit</button></center>
+<button class=" btn btn-back btn-dark " onclick="open_colse()">Back</button>
+</div>
+
+<script src="../static/js/ajax.js"></script>
+
+
