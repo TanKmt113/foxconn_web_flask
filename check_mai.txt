@@ -1,0 +1,22 @@
+else if ($('#' + id).val() != '') {
+      for (let i = 0; i < ul_id.length; i++) {
+        if (ul_id[i].id != id) {
+          if (ul_id[i].value == $('#' + id).val()) {
+            y.style.color = "red";
+            $("#error_mail").html("Duplicate email, please re-enter!");
+            $('#' + id).val('')
+          }
+          else {
+            $.post('/Upload/Mail',
+              {
+                action: "upload_mail",
+                val: ($('#' + id).val()),
+                id: id
+              }, function (ketqua) {
+                y.style.color = "#25D366";
+                $("#error_mail").html("'" + $('#' + id).val() + "'" + " email added successfully!");
+              });
+          }
+        }
+      }
+    }
